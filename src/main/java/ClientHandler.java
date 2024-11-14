@@ -54,11 +54,13 @@ public class ClientHandler implements Runnable{
             try{
                 String messageFromClient = bufferedReader.readLine();
 
-                if(messageFromClient != null && messageFromClient.equalsIgnoreCase("exit"))
+                if(messageFromClient == null || messageFromClient.equalsIgnoreCase("exit"))
                 {
+                    sendAll(this.clientName + " has left the chat",true);
                     safeCloseSocket(socket,bufferedReader,bufferedWriter);
                     break;
                 }
+
                 sendAll(this.clientName + " says " + messageFromClient,false);
             } catch (IOException e) {
                 safeCloseSocket(socket,bufferedReader,bufferedWriter);
@@ -88,7 +90,7 @@ public class ClientHandler implements Runnable{
 
     private void safeCloseSocket(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         handlers.remove(this);
-        sendAll("Server :" + this.clientName + " has left the chat",true);
+        //sendAll("Server :" + this.clientName + " has left the chat",true);
 
         try{
             if(bufferedReader != null)
